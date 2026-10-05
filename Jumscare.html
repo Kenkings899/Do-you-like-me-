@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Do you like me?</title>
+
+    <style>
+        body {
+            background: #89CFF0;
+            font-family: Cascadia Cursive, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #ffffe4;
+            width: 300px;
+            padding: 35px 30px;
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #4169e1;
+            font-family: cursive;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #555;
+            font-size: 15px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            margin: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .yes {
+            background: #4169e1;
+            color: white;
+        }
+
+        .no {
+            background: #ddd;
+            color: #333;
+        }
+
+        button:hover {
+            transform: scale(1.09);
+        }
+
+        img {
+            width: 200px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        /* Jumpscare fullscreen */
+        #jumpscare {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100vw;
+            height: 100vh;
+
+            background: black;
+            z-index: 9999;
+        }
+
+        #jumpscare video {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- FIRST PAGE -->
+    <div id="page1" class="card">
+
+        <h1>Do you like me?🥺</h1>
+
+        <p>Be honest😞...</p>
+
+        <button class="yes" onclick="yesPage()">
+            Yes 😍
+        </button>
+
+        <button class="no" onclick="noPage(1)">
+            No (╥﹏╥)
+        </button>
+
+    </div>
+
+
+    <!-- YES PAGE -->
+    <div id="yesPage" class="card" style="display: none;">
+
+        <h1>OMG OMG OMG!!!</h1>
+
+        <p>Really?! I really like you too!</p>
+
+        <img src="I_love.gif" alt="Heart GIF">
+
+        <p>💙👉👈💙</p>
+
+    </div>
+
+
+    <!-- NO PAGE -->
+    <div id="noPage" class="card" style="display: none;">
+
+        <h1 id="noTitle">Are you sure? 🥺</h1>
+
+        <p id="noText">
+            Think about it again...
+        </p>
+
+        <button class="yes" onclick="yesPage()">
+            Yes 💗
+        </button>
+
+        <button id="noBtn" class="no" onclick="noPage(2)">
+            No 😭
+        </button>
+
+    </div>
+
+
+    <!-- JUMPSCARE VIDEO -->
+    <div id="jumpscare">
+
+        <video id="scareVideo" autoplay playsinline muted>
+            <source src="jumpscare.mp4" type="video/mp4">
+        </video>
+
+    </div>
+
+
+    <script>
+
+        function yesPage() {
+
+            document.getElementById("page1").style.display = "none";
+            document.getElementById("noPage").style.display = "none";
+            document.getElementById("yesPage").style.display = "block";
+
+        }
+
+
+        function noPage(number) {
+
+            document.getElementById("page1").style.display = "none";
+            document.getElementById("noPage").style.display = "block";
+
+
+            if (number == 1) {
+
+                document.getElementById("noTitle").innerHTML =
+                    "Are you sure? 🥺";
+
+                document.getElementById("noText").innerHTML =
+                    "You really don't like me? 😭";
+
+            }
+
+
+            else if (number == 2) {
+
+                document.getElementById("noTitle").innerHTML =
+                    "REALLY?! 😭";
+
+                document.getElementById("noText").innerHTML =
+                    "Please think about it again... 💔";
+
+                document.getElementById("noBtn").setAttribute(
+                    "onclick",
+                    "noPage(3)"
+                );
+
+            }
+
+
+            else if (number == 3) {
+
+                document.getElementById("noTitle").innerHTML =
+                    "You're breaking my heart 💔";
+
+                document.getElementById("noText").innerHTML =
+                    "Are you absolutely sure? 🥺";
+
+                // Change the No button into the final button
+                document.getElementById("noBtn").innerHTML =
+                    "NO 😭";
+
+                document.getElementById("noBtn").setAttribute(
+                    "onclick",
+                    "jumpscare()"
+                );
+
+            }
+
+        }
+
+
+        function jumpscare() {
+
+              // Hide everything
+            document.getElementById("page1").style.display = "none";
+            document.getElementById("noPage").style.display = "none";
+            document.getElementById("yesPage").style.display = "none";
+
+            // Show fullscreen video
+            let jumpscareDiv = document.getElementById("jumpscare");
+            jumpscareDiv.style.display = "block";
+
+            let video = document.getElementById("scareVideo");
+            video.currentTime = 0;
+             video.muted = false; // Ensure audio plays
+            
+            let playPromise = video.play();
+
+             if (playPromise !== undefined) {
+
+                 playPromise.catch(error => {
+            console.log("Autoplay prevented, retrying muted:", error);
+            // Fallback retry
+            video.muted = true;
+            video.play();
+        });
+             let playPromise = video.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+           
+        }).catch(error => {
+            console.error("Playback failed:", error);
+            // Fallback: retry with user interaction or muted playback
+            video.muted = true;
+            video.play();
+        });
+    }
+
+             }
+
+
+        }
+
+          
+       
+       
+
+
+        
+
+    </script>
+
+</body>
+</html>
